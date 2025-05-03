@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <glm/glm.hpp>
 
 // Default camera values
 const float YAW = -90.0f;

@@ -1,17 +1,25 @@
 {
   "configurations": [
     {
-      "name": "macos-clang-arm64",
+      "name": "Mac",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "/opt/homebrew/opt/glew/include",
+        "/opt/homebrew/opt/glfw/include",
+        "/opt/homebrew/include",
+        "/opt/homebrew/opt/freeglut/include",
+        "/opt/homebrew/opt/freetype/include",
+        "/opt/homebrew/opt/assimp/include",
+        "/opt/homebrew/opt/glm/include"
       ],
-      "compilerPath": "/usr/bin/clang",
-      "cStandard": "${default}",
-      "cppStandard": "${default}",
-      "intelliSenseMode": "macos-clang-arm64",
-      "compilerArgs": [
-        ""
-      ]
+      "defines": [],
+      "macFrameworkPath": [
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+      ],
+      "compilerPath": "/usr/bin/clang++",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "macos-clang-x64"
     }
   ],
   "version": 4

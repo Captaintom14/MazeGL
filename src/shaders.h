@@ -6,9 +6,11 @@
 class shaders
 {
 public:
-    shaders();
-    ~shaders();
-
+  
+    void createShader(const char* vertexPath, const char* fragmentPath);
+    void use();
+    unsigned int ID;
+    
 private:
 
 };

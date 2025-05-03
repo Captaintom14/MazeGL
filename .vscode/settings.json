@@ -108,5 +108,6 @@
     "variant": "cpp",
     "vector": "cpp",
     "algorithm": "cpp"
-  }
+  },
+  "C_Cpp.errorSquiggles": "enabled"
 }
