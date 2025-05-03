@@ -1,5 +1,7 @@
 #include "shaders.h"
-#include <"glm/glm.hpp">
+
+#include <GL/glew.h> 
+#include "glm/glm.hpp"  
 
 #include <iostream>
 #include <fstream>
@@ -69,9 +71,9 @@ void shaders::createShader(const char* vertexPath, const char* fragmentPath){
         glGetShaderInfoLog(vertex, 512, NULL, infoLog);
         cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << endl;
     }
-
     // 4. fragment shader
-    fragment = glcreateShader(GL_FRAGMENT_SHADER);
+    fragment = glCreateShader(GL_FRAGMENT_SHADER);
+    fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fShaderCode, NULL);
     glCompileShader(fragment);
     // Check for compilation errors

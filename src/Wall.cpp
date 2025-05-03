@@ -3,8 +3,8 @@
 
 
 
-Wall::Wall(const glm::vec3& position, const glm::vec3& size, const glm::vec3& color, const string& texturePath)
-    : position(position), size(size), color(color)
+Wall::Wall(const glm::vec3& position, const glm::vec3& size,  const string& texturePath)
+    : position(position), size(size)
 {
     setupWall();
     loadTexture(texturePath);
@@ -98,8 +98,38 @@ void Wall::loadTexture(const string& path)
     stbi_image_free(data);
 }
 
+void Wall::render(shaders* shader, const glm::mat4& view, const glm::mat4& projection)
+{
+   if (!shader){
+    cerr << "Shader not initialized!" << endl;
+    return;
+   }
 
+   shader -> use();
 
+   // create model matrix
+   glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, position);
+    model = glm::scale(model, size);
+    model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 0.0f, 1.0f));
+  
+
+    // Set the model, view, and projection matrices in the shader
+    GLuint modelLoc = glGetUniformLocation(shader->ID, "model");
+    GLuint viewLoc = glGetUniformLocation(shader->ID, "view");
+    GLuint projectionLoc = glGetUniformLocation(shader->ID, "projection");
+    
+    //bind the texture 
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    GLuint textureLoc = glGetUniformLocation(shader->ID, "texture1");
+    glUniform1i(textureLoc, 0);
+
+    // draw the wall
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
+}
 
 
 

@@ -19,7 +19,7 @@ class Wall
 {
 public:
      // Constructor
-    Wall(const glm::vec3& position, const glm::vec3& size, const glm::vec3& color, const string& texturePath);
+    Wall(const glm::vec3& position, const glm::vec3& size, const string& texturePath);
     
     // Destructor
 
@@ -38,7 +38,7 @@ public:
     glm::vec3 getRotation() const;
 
     // render the wall
-    void render(const glm::mat4& view, const glm::mat4& projection);
+    void render(shaders* shader, const glm::mat4& view, const glm::mat4& projection);
 
 private:
 unsigned int VAO, VBO;

@@ -7,12 +7,17 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Camera.h"
+#include "shaders.h"
+#include "maze.h"
+#include "Wall.h"
 
 #include <iostream>
 
 // global variables
 GLFWwindow* window;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));  // Initialize camera with position
+shaders* shaderProgram = nullptr;
+maze* Maze = nullptr;
 
 // program functions
 void configureGLFW();
@@ -20,6 +25,8 @@ int initGLFW();
 int initGLEW();
 int configureWindow();
 void processInput(GLFWwindow *window);
+void renderScene();
+void setupMaze();
 
 // Configure GLFW
 void configureGLFW() {
@@ -80,6 +87,15 @@ void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     
+      float currentFrame = static_cast<float>(glfwGetTime());
+      float lastFrame = 0.0f;
+      float deltaTime = currentFrame - lastFrame;
+      lastFrame = currentFrame;   
+
+      float cameraSpeed = 2.5f * deltaTime; // adjust accordingly
+    glm::vec3 oldPosition = camera.Position;
+
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(Camera::FORWARD, 0.01f);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -88,6 +104,11 @@ void processInput(GLFWwindow *window) {
         camera.ProcessKeyboard(Camera::LEFT, 0.01f);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(Camera::RIGHT, 0.01f);
+    
+    // Check for collision with the maze due to movement of the camera
+    if (Maze && Maze->checkCollision(camera.Position)) {
+        camera.Position = oldPosition;
+    }
 }
 
 int main() {
