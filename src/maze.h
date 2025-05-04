@@ -5,12 +5,14 @@
 
 #include <vector>
 #include <stack>
+#include <queue>
 #include <random>
 #include <ctime>
 #include <glm/glm.hpp>
 #include <iostream>
 
 #include "Wall.h"
+#include "Floor.h"  // Added Floor header
 #include "shaders.h"
 
 using namespace std;
@@ -33,6 +35,9 @@ public:
 
     // render the maze
     void render(shaders* shader, const glm::mat4& view, const glm::mat4& projection);
+    
+    // New method to generate a path from start to end
+    void generatePath();
 
 private:
 
@@ -50,6 +55,13 @@ vector<vector<vector<bool>>> walls;
 // Wall objects to render the maze
 vector<Wall*> wallObjects;
 
+// Floor objects for the maze floor
+vector<Floor*> floorObjects;  // Added floor objects
+
+// Path from start to end point
+vector<pair<int, int>> pathCells;
+vector<Floor*> pathObjects;  // Objects to render the path
+
 // random number generator
 mt19937 rng;
 
@@ -57,6 +69,9 @@ mt19937 rng;
 void initliazeMaze();
 void generateMaze();
 void createWalls(const string &texturePath);
+void createFloors(const string &floorTexturePath);  // Added method for floor creation
+void createPathMarkers(); // Create visual markers for the path
+void createDirectPath(int startX, int startY, int endX, int endY); // New helper function
 };
 
 #endif

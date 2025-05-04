@@ -5,12 +5,11 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>  // Added for glm::value_ptr
+#include "stb_image.h"  // Local include now available in src directory
 #include <string>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h" // for texture loading
-
-#include "shaders.h" 
+#include "shaders.h"  // Fixed to use quotes for local include
 using namespace std;
 
 #pragma once

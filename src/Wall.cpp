@@ -20,22 +20,56 @@ Wall::~Wall()
 
 
 void Wall :: setupWall(){
-    // Set up the vertex data
-    float vertices[] ={
+    // Set up the vertex data for a full 3D cube
+    float vertices[] = {
         // positions          // texture coords
-        -0.5f, -0.5f,  0.0f,      0.0f, 0.0f,
-        0.5f, -0.5f,  0.0f,      1.0f, 0.0f,
-        0.5f,  0.5f,  0.0f,      1.0f, 1.0f,
-       
-       -0.5f, -0.5f,  0.0f,      0.0f, 0.0f,
-        0.5f,  0.5f,  0.0f,      1.0f, 1.0f,
-       -0.5f,  0.5f,  0.0f,      0.0f, 1.0f
-    };
-
-    //set up the indices
-    unsigned int indices[] = {
-        0, 1, 2,
-        3, 4, 5
+        // Front face
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  // bottom-left
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,  // bottom-right
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,  // top-left
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  // bottom-left
+        
+        // Back face
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,  // bottom-right
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,  // top-right
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,  // top-right
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,  // top-left
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+        
+        // Left face
+        -0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,  // top-left
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+        -0.5f, -0.5f,  0.5f,  1.0f, 0.0f,  // bottom-right
+        -0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+        
+        // Right face
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+         0.5f,  0.5f, -0.5f,  0.0f, 1.0f,  // top-left
+         0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+         0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,  // bottom-right
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+        
+        // Bottom face
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,  // bottom-right
+         0.5f, -0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+         0.5f, -0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f,  // top-left
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+        
+        // Top face
+        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f,  // bottom-left
+         0.5f,  0.5f, -0.5f,  1.0f, 0.0f,  // bottom-right
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // top-right
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,  // top-left
+        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f   // bottom-left
     };
 
     // Generate and bind the Vertex Array Object (VAO)
@@ -82,14 +116,12 @@ void Wall::loadTexture(const string& path)
             format = GL_RGB;
         else if (nrChannels == 4)
             format = GL_RGBA;
-            // set texture wrapping
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            // set texture filtering
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+        // This is the missing part - actually upload texture data to OpenGL
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
             
-            cout << "Texture loaded successfully: " << path << endl;
+        cout << "Texture loaded successfully: " << path << endl;
     }
     else {
         cout << "Failed to load texture: " << path << endl;
@@ -105,30 +137,48 @@ void Wall::render(shaders* shader, const glm::mat4& view, const glm::mat4& proje
     return;
    }
 
-   shader -> use();
+   shader->use();
 
    // create model matrix
    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, position);
-    model = glm::scale(model, size);
-    model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 0.0f, 1.0f));
+   model = glm::translate(model, position);
+   model = glm::scale(model, size);
+   model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
   
-
-    // Set the model, view, and projection matrices in the shader
-    GLuint modelLoc = glGetUniformLocation(shader->ID, "model");
-    GLuint viewLoc = glGetUniformLocation(shader->ID, "view");
-    GLuint projectionLoc = glGetUniformLocation(shader->ID, "projection");
+   // Set the model, view, and projection matrices in the shader
+   GLuint modelLoc = glGetUniformLocation(shader->ID, "model");
+   GLuint viewLoc = glGetUniformLocation(shader->ID, "view");
+   GLuint projectionLoc = glGetUniformLocation(shader->ID, "projection");
+   
+   // Set the uniform values
+   glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+   glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+   glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
     
-    //bind the texture 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    GLuint textureLoc = glGetUniformLocation(shader->ID, "texture1");
-    glUniform1i(textureLoc, 0);
+   // Ensure depth test is enabled with proper parameters
+   glEnable(GL_DEPTH_TEST);
+   glDepthFunc(GL_LESS);
+   
+   // Disable backface culling to make walls visible from all angles
+   glDisable(GL_CULL_FACE);
+   
+   // Prevent z-fighting by using polygon offset
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1.0f, 1.0f);
+   
+   // Bind the texture 
+   glActiveTexture(GL_TEXTURE0);
+   glBindTexture(GL_TEXTURE_2D, textureID);
+   GLuint textureLoc = glGetUniformLocation(shader->ID, "texture1");
+   glUniform1i(textureLoc, 0);
 
-    // draw the wall
-    glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
+   // Draw the wall - drawing all 36 vertices (6 faces with 6 vertices each)
+   glBindVertexArray(VAO);
+   glDrawArrays(GL_TRIANGLES, 0, 36);
+   glBindVertexArray(0);
+   
+   // Disable polygon offset after drawing
+   glDisable(GL_POLYGON_OFFSET_FILL);
 }
 
 
